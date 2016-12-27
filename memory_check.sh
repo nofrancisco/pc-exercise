@@ -52,11 +52,15 @@ fi
 if [ $Used_memory -ge $critical_threshold ]
 	then
 		echo "2. Used Memory ($Used_memory) is greater than or equal to critical threshold ($critical_threshold) mb."
+		echo "Top 10 Processes: "
+		ps -eo pid,cmd,%mem,user,args --sort -rss | head -10
+		exit 1
 fi
 
 if [ $Used_memory -ge $warning_threshold ] && [ $Used_memory -lt $critical_threshold ]
 	then
 		echo "1. Used Memory ($Used_memory) MB is greater than or equal to Warning threshold ($warning_threshold) MB but less than Critical threshold ($critical_threshold) MB"
+		exit 1
 fi
 
 if [ $Used_memory -lt $warning_threshold ]
@@ -64,3 +68,4 @@ if [ $Used_memory -lt $warning_threshold ]
 		echo "0: Used Memory ($Used_memory) MB is less than Warning threshold ($warning_threshold) MB"
 fi
  
+
