@@ -11,7 +11,6 @@ echo "Free Memory: "$Free_memory "mb"
 while getopts ":c: :w: :e:" opt; do
 	case $opt in
 		c) 
-				
 			critical_threshold=${OPTARG}
 			echo "Critical Threshold (%) =" $critical_threshold
 			critical_value=$(bc <<< "scale=2; $Total_memory - ($Total_memory * ($critical_threshold/100))")
@@ -42,6 +41,12 @@ while getopts ":c: :w: :e:" opt; do
 	esac
 done
 
+if [ $critical_threshold -lt $warning_threshold ]
+	then
+		echo "Critical Threshold ($critical_threshold) should be greater than Warning Threshold ($warning_threshold)"
+fi
 
-		 
-		
+if [ $Used_memory > $critical_value ]
+	then
+		echo "2: used memory ($Used_memory) mb is greater than or equal to critical threshold ($critical_value) mb"
+fi
