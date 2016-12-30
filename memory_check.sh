@@ -9,21 +9,18 @@ while getopts ":c: :w: :e:" opt; do
 	case $opt in
 		c) 
 			critical_threshold=${OPTARG}
-			#echo "Critical Threshold (%) =" $critical_threshold
 			let "critical_threshold = ($Total_memory * $critical_threshold / 100)"		
 			;;
 			
 		w)
 
 			warning_threshold=${OPTARG}
-			#echo "Warning Threshold (%) =" $warning_threshold
 			let "warning_threshold = ($Total_memory * $warning_threshold / 100)"
 			
 			;;
 
 		e)
 			email_address=${OPTARG}
-			#echo "Entered email address: " $email_address
 			;;
 
 		\?)
@@ -56,6 +53,7 @@ if [ $Used_memory -ge $critical_threshold ]
 		echo "Critical Threshold: " $critical_threshold "MB"
 		echo "Warning Threshold: " $warning_threshold "MB"
 		echo "2. Used Memory ($Used_memory) is greater than or equal to critical threshold ($critical_threshold) mb."
+		echo "Email: $email_address"
 		echo "Date: $dt"
 		echo "Top 10 Processes: "
 		ps -eo pid,%mem,user,args --sort -rss | head -10
@@ -69,6 +67,7 @@ if [ $Used_memory -ge $warning_threshold ] && [ $Used_memory -lt $critical_thres
 		echo "Used Memory: "$Used_memory "MB"
 		echo "Critical Threshold: " $critical_threshold "MB"
 		echo "Warning Threshold: " $warning_threshold "MB"
+		echo "Email: $email_address"
 		echo "1. Used Memory ($Used_memory) MB is greater than or equal to Warning threshold ($warning_threshold) MB but less than Critical threshold ($critical_threshold) MB"
 		exit 1
 fi
@@ -80,6 +79,7 @@ if [ $Used_memory -lt $warning_threshold ]
 		echo "Used Memory: "$Used_memory "MB"
 		echo "Critical Threshold: " $critical_threshold "MB"
 		echo "Warning Threshold: " $warning_threshold "MB"
+		echo "Email: $email_address"
 		echo "0: Used Memory ($Used_memory) MB is less than Warning threshold ($warning_threshold) MB"
 fi
  
